@@ -19,14 +19,14 @@
             android:background="@drawable/rounded_corner">
 
             <ImageView
-                android:id="@+id/resturant_logo"
+                android:id="@+id/restaurant_logo"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
                 android:src="@drawable/pasta" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/returant_title"
+                android:id="@+id/restaurant_title"
                 android:textColor="@color/black"
                 android:textStyle="bold|italic"
                 android:layout_margin="5dp"
