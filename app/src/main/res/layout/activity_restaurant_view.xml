@@ -37,9 +37,11 @@
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
+            android:layout_margin="10dp"
             android:layout_width="match_parent"
             android:id="@+id/recyclerview"
             android:layout_height="wrap_content"
+            android:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:orientation="horizontal"
             />
 
