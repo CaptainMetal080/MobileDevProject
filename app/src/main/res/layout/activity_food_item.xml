@@ -4,14 +4,14 @@
     android:orientation="horizontal"
     android:padding="16dp"
     android:background="@drawable/rounded_corner"
-    android:backgroundTint="#FBE9E7">
+    android:backgroundTint="#FFCCBC">
     <ImageView
         android:id="@+id/item_logo"
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:src="@drawable/pasta" />
     <LinearLayout
-        android:background="#FFCCBC"
+        android:background="#FFE1D6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
