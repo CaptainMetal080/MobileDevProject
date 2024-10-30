@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="#F5F5F5">
+
+    <TextView
+        android:id="@+id/login_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Login"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp" />
+
+    <Button
+        android:id="@+id/btn_driver"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/login_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="80dp"
+        android:backgroundTint="#2196F3"
+        android:text="Driver Login"
+        android:textColor="#FFFFFF" />
+
+    <Button
+        android:id="@+id/btn_customer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Customer Login"
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/btn_driver"
+        android:layout_centerHorizontal="true"
+        android:backgroundTint="#FF8A65"
+        android:textColor="#FFFFFF" />
+
+</RelativeLayout>
