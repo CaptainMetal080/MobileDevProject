@@ -20,6 +20,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    private DatabaseHelper dbHelper;
     private RecyclerView recyclerView;
     private RestaurantAdapter adapter;
     private List<Restaurant> restaurantList;
@@ -31,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        dbHelper = new DatabaseHelper(this);
 
         recyclerView = findViewById(R.id.recyclerview);
         restaurantList = new ArrayList<>();
@@ -50,12 +53,9 @@ public class MainActivity extends AppCompatActivity {
         );
 
         Button buttonAddRestaurant = findViewById(R.id.button);
-        buttonAddRestaurant.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, AddRestaurantActivity.class);
-                addRestaurantLauncher.launch(intent); // Use ActivityResultLauncher
-            }
+        buttonAddRestaurant.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, MainActivity.class);
+            addRestaurantLauncher.launch(intent); // Use ActivityResultLauncher
         });
 
         loadRestaurants();
@@ -79,6 +79,9 @@ public class MainActivity extends AppCompatActivity {
             @SuppressLint("Range") String title = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_TITLE));
             @SuppressLint("Range") byte[] logoBytes = cursor.getBlob(cursor.getColumnIndex(DatabaseHelper.COLUMN_LOGO));
             Bitmap logo = BitmapFactory.decodeByteArray(logoBytes, 0, logoBytes.length);
+
+            // Load food items for the restaurant
+
             restaurantList.add(new Restaurant(title, logo));
         }
         cursor.close();
@@ -86,4 +89,5 @@ public class MainActivity extends AppCompatActivity {
 
         adapter.notifyDataSetChanged();
     }
+
 }

@@ -1,6 +1,7 @@
 package com.example.mobiledevproject;
 
 import android.graphics.Bitmap;
+import java.util.List;
 
 public class Restaurant {
     private String title;
