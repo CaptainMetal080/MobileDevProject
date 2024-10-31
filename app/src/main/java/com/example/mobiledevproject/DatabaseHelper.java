@@ -24,13 +24,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String TABLE_CREATE_RESTAURANTS =
             "CREATE TABLE " + TABLE_RESTAURANTS + " (" +
-                    COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    COLUMN_TITLE + " TEXT, " +
+                    COLUMN_TITLE + " TEXT PRIMARY KEY, " +
                     COLUMN_LOGO + " BLOB);";
 
     private static final String TABLE_CREATE_FOODS =
             "CREATE TABLE " + TABLE_FOODS + " (" +
-                    COLUMN_TITLE + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    COLUMN_TITLE + " TEXT PRIMARY KEY, " +
                     COLUMN_FOOD_NAME + " TEXT, " +
                     COLUMN_FOOD_IMAGE + " BLOB, " +
                     COLUMN_FOOD_PRICE + " REAL, " + // Adding food price

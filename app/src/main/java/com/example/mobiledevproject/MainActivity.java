@@ -90,4 +90,7 @@ public class MainActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
+    public void Cart(View view) {
+
+    }
 }

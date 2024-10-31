@@ -56,7 +56,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
     }
     public void insertData() {
         // Example data
-        Restaurant restaurant1 = new Restaurant("Restaurant 1", BitmapFactory.decodeResource(context.getResources(), R.drawable.logo1));
+        Restaurant restaurant1 = new Restaurant("MCDS", BitmapFactory.decodeResource(context.getResources(), R.drawable.logo1));
         Restaurant restaurant2 = new Restaurant("Restaurant 2", BitmapFactory.decodeResource(context.getResources(), R.drawable.logo2));
 
         restaurantList.add(restaurant1);
