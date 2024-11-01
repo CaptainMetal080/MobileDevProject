@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:background="#FBE9E7">
+    android:background="#FBE9E7"
+    tools:context=".CartActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -17,6 +18,7 @@
         android:theme="?attr/actionBarTheme"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
@@ -31,6 +33,18 @@
         app:layout_constraintTop_toTopOf="@id/toolbar"
         app:layout_constraintVertical_bias="0.5" />
 
+    <SearchView
+        android:id="@+id/searchView"
+        android:layout_width="341dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/rounded_search_view"
+        android:iconifiedByDefault="false"
+        android:queryHint="What are you craving..."
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
@@ -44,40 +58,32 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@+id/button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.315"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintVertical_bias="0.018" />
-
-
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:padding="12dp"
-        android:layout_marginBottom="30dp"
-
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/checkoutButton"
         app:layout_constraintEnd_toEndOf="parent"
-        android:orientation="vertical">
+        app:layout_constraintStart_toStartOf="parent">
+
         <LinearLayout
             android:layout_marginHorizontal="5dp"
             android:paddingHorizontal="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-
-            android:text="Subtotal:"
-            android:textColor="#F4511E"
-            android:textSize="16sp"
-            android:textStyle="bold"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:text="Subtotal:"
+                android:textColor="#F4511E"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/subtotal"
@@ -87,31 +93,31 @@
                 android:textStyle="italic|bold"
                 android:text="0" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_marginHorizontal="5dp"
             android:paddingHorizontal="5dp"
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:layout_marginRight="10dp"
                 android:text="Delivery Fee:"
                 android:textColor="#80F4511E"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/delivery"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
                 android:textColor="#109584"
                 android:textStyle="italic|bold"
                 android:text="0" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_marginHorizontal="5dp"
             android:paddingHorizontal="5dp"
@@ -121,21 +127,21 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:layout_marginRight="10dp"
                 android:text="Estimated Taxes:"
                 android:textColor="#80F4511E"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/tax"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
                 android:textColor="#109584"
                 android:textStyle="italic|bold"
                 android:text="0" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_marginHorizontal="5dp"
             android:paddingHorizontal="5dp"
@@ -146,56 +152,33 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:layout_marginRight="10dp"
                 android:text="TOTAL:"
                 android:textColor="#F4511E"
                 android:textSize="24sp"
                 android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/total"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
                 android:textColor="#109584"
                 android:textStyle="italic|bold"
                 android:text="0" />
         </LinearLayout>
-
     </LinearLayout>
 
-    <ImageButton
-        android:id="@+id/imageButton"
+    <Button
+        android:id="@+id/checkoutButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="#FD8964"
-        android:rotationY="-180"
-        app:layout_constraintBottom_toBottomOf="@+id/toolbar"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@android:drawable/ic_media_play"
-        app:tint="#FFFFFF"
-        android:onClick="backButton"/>
-
-    <SearchView
-        android:id="@+id/searchView"
-        android:layout_width="341dp"
-        android:layout_height="32dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/rounded_search_view"
-        android:iconifiedByDefault="false"
-        android:queryHint="What are you craving.."
+        android:layout_marginBottom="20dp"
+        android:backgroundTint="#FF8A65"
+        android:text="Checkout"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"/>
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.02872777" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
