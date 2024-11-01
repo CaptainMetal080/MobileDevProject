@@ -53,11 +53,12 @@ public class CartActivity extends AppCompatActivity {
                 @SuppressLint("Range") byte[] image = cursor.getBlob(cursor.getColumnIndex(DatabaseHelper.COLUMN_FOOD_IMAGE_CART));
                 @SuppressLint("Range") double price = cursor.getDouble(cursor.getColumnIndex(DatabaseHelper.COLUMN_PRICE));
                 @SuppressLint("Range") String description = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_FOOD_DESC_CART));
-                @SuppressLint("Range") String restaurant = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_RESTAURANT_ORDER));
+                @SuppressLint("Range") String restaurant = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_RESTAURANT_CART));
+                @SuppressLint("Range") String concat = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_RESTAURANT_FOOD_CART));
                 @SuppressLint("Range") String tag = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_FOOD_TAGS_CART));
                 @SuppressLint("Range") int quantity = Integer.parseInt(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_QUANTITY)));
 
-                cartItemList.add(new Food(name, image, price, description, restaurant, tag, "",quantity));
+                cartItemList.add(new Food(name, image, price, description, restaurant, tag,concat ,quantity));
             } while (cursor.moveToNext());
             }
             catch (SQLiteBlobTooBigException e) {

@@ -53,7 +53,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
 
         holder.itemView.setOnClickListener(v -> {
             count.getAndIncrement();
-            dbHelper.addFoodToCart(food.getRestaurant(),food.getName(), food.getPrice(), food.getImage(), food.getDescription(), food.getTag(), count.get());
+            dbHelper.addFoodToCart(food.getRestaurant(),food.getName(), food.getPrice(), food.getImage(), food.getDescription(), food.getTag(),food.getConcat(), count.get());
             Toast.makeText(context, food.getName() + " added to cart!", Toast.LENGTH_SHORT).show();
         });
     }
