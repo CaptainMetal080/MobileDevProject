@@ -4,8 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -55,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 }
+
         );
 
         Button buttonAddRestaurant = findViewById(R.id.button);
@@ -68,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
     }
 
     @Override
@@ -105,5 +105,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void Cart(View view) {
 
+    }
+    public void RestraurantPage(View view){
+        Intent intent = new Intent(MainActivity.this, MainActivity.class);
     }
 }

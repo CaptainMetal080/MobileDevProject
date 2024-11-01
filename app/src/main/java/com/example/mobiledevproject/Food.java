@@ -10,12 +10,16 @@ public class Food implements Serializable {
     private byte[] image;
     private double price;
     private String description;
+    private String restaurant;
+    private String tag;
 
-    public Food(String name, byte[] image, double price, String description) {
+    public Food(String name, byte[] image, double price, String description, String restaurant, String tag) {
         this.name = name;
         this.image = image;
         this.price = price;
         this.description = description;
+        this.restaurant=restaurant;
+        this.tag=tag;
     }
 
     public String getName() {

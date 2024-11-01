@@ -29,11 +29,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String TABLE_CREATE_FOODS =
             "CREATE TABLE " + TABLE_FOODS + " (" +
-                    COLUMN_TITLE + " TEXT PRIMARY KEY, " +
+                    COLUMN_TITLE + " TEXT, " + // Include restaurant title
                     COLUMN_FOOD_NAME + " TEXT, " +
                     COLUMN_FOOD_IMAGE + " BLOB, " +
-                    COLUMN_FOOD_PRICE + " REAL, " + // Adding food price
-                    COLUMN_FOOD_DESCRIPTION + " TEXT );";
+                    COLUMN_FOOD_PRICE + " REAL, " + // Food price
+                    COLUMN_FOOD_DESCRIPTION + " TEXT, " +
+                    "PRIMARY KEY (" + COLUMN_TITLE + ", " + COLUMN_FOOD_NAME + "));"; // Composite primary key
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
