@@ -14,6 +14,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Creation of restaurants table
     public static final String TABLE_RESTAURANTS = "restaurants";
     public static final String COLUMN_RESTAURANT_NAME = "restaurant"; // Restaurant name will be PK
+    public static final String COLUMN_RESTAURANT_LONG = "restaurant_longitude"; // Restaurant's longitude on map
+    public static final String COLUMN_RESTAURANT_LAT = "restaurant_latitude"; // Restaurant's latitude on map
     public static final String COLUMN_LOGO = "logo"; // Assuming logo is stored as BLOB
 
     // Creation of foods table
@@ -39,6 +41,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TABLE_CREATE_RESTAURANTS =
             "CREATE TABLE " + TABLE_RESTAURANTS + " (" +
                     COLUMN_RESTAURANT_NAME + " TEXT PRIMARY KEY, " +
+                    COLUMN_RESTAURANT_LONG + " REAL, " +
+                    COLUMN_RESTAURANT_LAT + " REAL, " +
                     COLUMN_LOGO + " BLOB);";
 
     private static final String TABLE_CREATE_FOODS =
