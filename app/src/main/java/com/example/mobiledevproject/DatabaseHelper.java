@@ -35,6 +35,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_ETA = "ETA"; // Food ordered
     public static final String COLUMN_ORDER_DATE = "order_date"; // Date/time ordered
 
+    // Query for creating the tables
     private static final String TABLE_CREATE_RESTAURANTS =
             "CREATE TABLE " + TABLE_RESTAURANTS + " (" +
                     COLUMN_RESTAURANT_NAME + " TEXT PRIMARY KEY, " +
