@@ -49,15 +49,16 @@ public class CartActivity extends AppCompatActivity {
             try {
 
             do {
-                @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_FOOD_NAME_ORDER));
-                @SuppressLint("Range") byte[] image = cursor.getBlob(cursor.getColumnIndex(DatabaseHelper.COLUMN_FOOD_IMAGE_ORDER));
-                @SuppressLint("Range") double price = cursor.getDouble(cursor.getColumnIndex(DatabaseHelper.COLUMN_FOOD_PRICE_ORDER));
-                @SuppressLint("Range") String description = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_FOOD_DESCRIPTION_ORDER));
-                @SuppressLint("Range") String restaurant = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_RESTAURANT_ORDER));
-                @SuppressLint("Range") String tag = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_FOOD_TAGS_ORDER));
-                @SuppressLint("Range") String concat = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_RESTAURANT_FOOD_ORDER));
+                @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_FOOD_ITEM));
+                @SuppressLint("Range") byte[] image = cursor.getBlob(cursor.getColumnIndex(DatabaseHelper.COLUMN_FOOD_IMAGE_CART));
+                @SuppressLint("Range") double price = cursor.getDouble(cursor.getColumnIndex(DatabaseHelper.COLUMN_PRICE));
+                @SuppressLint("Range") String description = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_FOOD_DESC_CART));
+                @SuppressLint("Range") String restaurant = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_RESTAURANT_CART));
+                @SuppressLint("Range") String concat = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_RESTAURANT_FOOD_CART));
+                @SuppressLint("Range") String tag = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_FOOD_TAGS_CART));
+                @SuppressLint("Range") int quantity = Integer.parseInt(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_QUANTITY)));
 
-                cartItemList.add(new Food(name, image, price, description, restaurant, tag, concat));
+                cartItemList.add(new Food(name, image, price, description, restaurant, tag,concat ,quantity));
             } while (cursor.moveToNext());
             }
             catch (SQLiteBlobTooBigException e) {

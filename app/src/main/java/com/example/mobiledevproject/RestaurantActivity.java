@@ -60,7 +60,7 @@ public class RestaurantActivity extends AppCompatActivity {
                 @SuppressLint("Range") String tag = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_FOOD_TAGS));
                 @SuppressLint("Range") String concat = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_RESTAURANT_NAME));
 
-                foodList.add(new Food(name, image, price, description, restaurant, tag, concat));
+                foodList.add(new Food(name, image, price, description, restaurant, tag, concat,1));
             } while (cursor.moveToNext());
             cursor.close();
         }

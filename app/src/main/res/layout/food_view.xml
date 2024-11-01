@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
@@ -10,33 +11,38 @@
         android:id="@+id/item_logo"
         android:layout_width="64dp"
         android:layout_height="64dp" />
+
     <LinearLayout
-        android:background="#FFE1D6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#FFE1D6"
         android:orientation="vertical"
-        android:padding="5dp">
-    <TextView
-        android:id="@+id/item_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Item"
-        android:textColor="@color/black"
-        android:textSize="18sp"/>
+        android:paddingRight="72dp">
+
+        <TextView
+            android:id="@+id/item_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Item"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
         <TextView
             android:id="@+id/item_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="price"
-            android:textStyle="italic"
+            android:textColor="#99BF360C"
             android:textSize="14sp"
-            android:textColor="#99BF360C"/>
+            android:textStyle="italic" />
+
         <TextView
             android:id="@+id/item_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="ingrediants/description"
             android:textColor="#99000000"
-            android:textSize="14sp"/>
+            android:textSize="14sp" />
     </LinearLayout>
+
 </LinearLayout>

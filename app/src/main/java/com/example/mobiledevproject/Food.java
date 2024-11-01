@@ -13,8 +13,9 @@ public class Food implements Serializable {
     private String restaurant;
     private String tag;
     private String concat;
+    private int quantity;
 
-    public Food(String name, byte[] image, double price, String description, String restaurant, String tag, String concat) {
+    public Food(String name, byte[] image, double price, String description, String restaurant, String tag, String concat, int quantity) {
         this.name = name;
         this.image = image;
         this.price = price;
@@ -22,6 +23,7 @@ public class Food implements Serializable {
         this.restaurant=restaurant;
         this.tag=tag;
         this.concat=concat;
+        this.quantity=quantity;
     }
 
     public String getName() {
@@ -52,6 +54,10 @@ public class Food implements Serializable {
         }
         else{return  restaurant+name;
         }
+    }
+
+    public int getQuantity(){
+        return quantity;
     }
 
     public Bitmap bytesToBitmap(byte[] byteArray) {
