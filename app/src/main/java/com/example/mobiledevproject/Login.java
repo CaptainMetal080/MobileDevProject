@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class Login extends AppCompatActivity {
 
-    private Button btnLogin;
+    private Button btnLogin, btnSignup;
     private EditText usernameInput, passwordInput;
 
     @Override
@@ -18,8 +18,9 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // Initialize the login button and EditText fields
+        // Initialize the buttons and EditText fields
         btnLogin = findViewById(R.id.btn_login);
+        btnSignup = findViewById(R.id.btn_signup);
         usernameInput = findViewById(R.id.username_input);
         passwordInput = findViewById(R.id.password_input);
 
@@ -39,7 +40,15 @@ public class Login extends AppCompatActivity {
                 startActivity(mainIntent);
             }
         });
+
+        // Set onClickListener for the Sign Up button
+        btnSignup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Launch SignUpActivity (you can create this activity)
+                Intent signupIntent = new Intent(Login.this, MainActivity.class);
+                startActivity(signupIntent);
+            }
+        });
     }
 }
-
-

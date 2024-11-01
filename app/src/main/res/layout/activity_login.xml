@@ -39,7 +39,7 @@
         android:backgroundTint="#BDBDBD"
         android:inputType="textPassword" />
 
-    <!-- Single Login button -->
+    <!-- Login button -->
     <Button
         android:id="@+id/btn_login"
         android:layout_width="match_parent"
@@ -49,6 +49,18 @@
         android:layout_below="@id/password_input"
         android:layout_centerHorizontal="true"
         android:backgroundTint="#2196F3"
+        android:textColor="#FFFFFF" />
+
+    <!-- Sign Up button -->
+    <Button
+        android:id="@+id/btn_signup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sign Up"
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/btn_login"
+        android:layout_centerHorizontal="true"
+        android:backgroundTint="#FF8A65"
         android:textColor="#FFFFFF" />
 
 </RelativeLayout>
