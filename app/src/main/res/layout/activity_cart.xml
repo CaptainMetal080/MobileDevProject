@@ -169,16 +169,11 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/checkoutButton"
+        android:id="@+id/checkout_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:backgroundTint="#FF8A65"
         android:text="Checkout"
-        android:textColor="#FFFFFF"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:onClick="performCheckout" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
