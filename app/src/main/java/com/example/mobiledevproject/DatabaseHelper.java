@@ -142,4 +142,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
         return db.rawQuery("SELECT * FROM " + TABLE_CART, null);
     }
+
+    public Cursor retrieveFoodByTitle(String title) {
+        SQLiteDatabase db = getReadableDatabase();
+        return db.rawQuery("SELECT * FROM " + TABLE_FOODS + " WHERE " + COLUMN_RESTAURANT + " = ?", new String[]{title});
+    }
 }
