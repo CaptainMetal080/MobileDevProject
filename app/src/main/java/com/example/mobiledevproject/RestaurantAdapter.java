@@ -1,6 +1,9 @@
 package com.example.mobiledevproject;
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +13,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.RestaurantViewHolder> {
@@ -36,7 +42,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
     public void onBindViewHolder(@NonNull RestaurantViewHolder holder, int position) {
         Restaurant restaurant = restaurantList.get(position);
         holder.titleTextView.setText(restaurant.getTitle());
-        holder.logoImageView.setImageBitmap(restaurant.getLogo());
+        holder.logoImageView.setImageBitmap(restaurant.bytesToBitmap(restaurant.getLogo()));
     }
 
     @Override
@@ -54,10 +60,16 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
             logoImageView = itemView.findViewById(R.id.restaurant_logo);
         }
     }
-    public void insertData() {
+    public void insertData() throws IOException {
         // Example data
-        Restaurant restaurant1 = new Restaurant("MCDS", BitmapFactory.decodeResource(context.getResources(), R.drawable.logo1));
-        Restaurant restaurant2 = new Restaurant("Restaurant 2", BitmapFactory.decodeResource(context.getResources(), R.drawable.logo2));
+
+        @SuppressLint("UseCompatLoadingForDrawables") byte[] pasta = bitmapToByte(context.getResources().getDrawable(R.drawable.logo1));
+
+        Bitmap logo1 = BitmapFactory.decodeStream(context.getAssets().open("pasta.png"));
+        Bitmap logo2 = BitmapFactory.decodeStream(context.getAssets().open("pasta.png"));
+
+        Restaurant restaurant1 = new Restaurant("MCDS", pasta);
+        Restaurant restaurant2 = new Restaurant("Restaurant 2", pasta);
 
         restaurantList.add(restaurant1);
         restaurantList.add(restaurant2);
@@ -65,5 +77,15 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
         notifyDataSetChanged(); // Notify adapter of data changes
     }
 
+    public byte[] bitmapToByte(Drawable image){
+        // Convert the Drawable image to a Bitmap
+        Bitmap bitmap = ((BitmapDrawable)image).getBitmap();
 
+        // Convert the Bitmap to a byte array
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        byte[] bitmapdata = stream.toByteArray();
+
+        return bitmapdata;
+    }
 }

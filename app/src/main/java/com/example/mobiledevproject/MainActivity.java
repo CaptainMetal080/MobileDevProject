@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +48,11 @@ public class MainActivity extends AppCompatActivity {
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == RESULT_OK) {
-                        loadRestaurants(); // Reload restaurants if a new one was added
+                        try {
+                            loadRestaurants(); // Reload restaurants if a new one was added
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
                 }
         );
@@ -58,17 +63,26 @@ public class MainActivity extends AppCompatActivity {
             addRestaurantLauncher.launch(intent); // Use ActivityResultLauncher
         });
 
-        loadRestaurants();
+        try {
+            loadRestaurants();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        loadRestaurants(); // Reload restaurants when coming back from the add activity
+        try {
+            loadRestaurants(); // Reload restaurants when coming back from the add activity
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    private void loadRestaurants() {
+    private void loadRestaurants() throws IOException {
         restaurantList.clear();
+        adapter.insertData();
         DatabaseHelper dbHelper = new DatabaseHelper(this);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
@@ -78,11 +92,10 @@ public class MainActivity extends AppCompatActivity {
         while (cursor.moveToNext()) {
             @SuppressLint("Range") String title = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_TITLE));
             @SuppressLint("Range") byte[] logoBytes = cursor.getBlob(cursor.getColumnIndex(DatabaseHelper.COLUMN_LOGO));
-            Bitmap logo = BitmapFactory.decodeByteArray(logoBytes, 0, logoBytes.length);
 
             // Load food items for the restaurant
 
-            restaurantList.add(new Restaurant(title, logo));
+            restaurantList.add(new Restaurant(title, logoBytes));
         }
         cursor.close();
         db.close();
