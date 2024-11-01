@@ -1,12 +1,13 @@
 package com.example.mobiledevproject;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 public class Restaurant {
     private String title;
-    private Bitmap logo;
+    private byte[] logo;
 
-    public Restaurant(String title, Bitmap logo) {
+    public Restaurant(String title, byte[] logo) {
         this.title = title;
         this.logo = logo;
     }
@@ -15,7 +16,11 @@ public class Restaurant {
         return title;
     }
 
-    public Bitmap getLogo() {
+    public byte[] getLogo() {
         return logo;
+    }
+
+    public Bitmap bytesToBitmap(byte[] byteArray) {
+        return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
     }
 }
