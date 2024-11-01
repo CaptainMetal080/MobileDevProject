@@ -13,13 +13,13 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="Status"
-        android:textColor="#FFA500"
+        android:textColor="#FF7600"
         android:textSize="18sp"
         android:textStyle="bold"
+        android:fontFamily="sans-serif-medium"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
-
 
     <TextView
         android:id="@+id/eta_text"
@@ -29,6 +29,7 @@
         android:textColor="#1E90FF"
         android:textSize="18sp"
         android:textStyle="bold"
+        android:fontFamily="sans-serif-medium"
         app:layout_constraintTop_toBottomOf="@id/status_text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
