@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerview);
         restaurantList = new ArrayList<>();
-        adapter = new RestaurantAdapter(restaurantList);
+        adapter = new RestaurantAdapter(this, restaurantList);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);

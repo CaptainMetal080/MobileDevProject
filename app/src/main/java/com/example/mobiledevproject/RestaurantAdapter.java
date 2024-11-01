@@ -1,7 +1,8 @@
 package com.example.mobiledevproject;
-import android.annotation.SuppressLint;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
@@ -10,12 +11,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.List;
 
 public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.RestaurantViewHolder> {
@@ -24,11 +24,9 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
     private Context context;
 
     public RestaurantAdapter(Context context, List<Restaurant> restaurantList) {
-        this.context = context; // Initialize context
+        // Initialize context
         this.restaurantList = restaurantList;
-    }
-    public RestaurantAdapter(List<Restaurant> restaurantList) {
-        this.restaurantList = restaurantList;
+        this.context=context;
     }
 
     @NonNull
@@ -42,7 +40,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
     public void onBindViewHolder(@NonNull RestaurantViewHolder holder, int position) {
         Restaurant restaurant = restaurantList.get(position);
         holder.titleTextView.setText(restaurant.getTitle());
-        holder.logoImageView.setImageBitmap(restaurant.bytesToBitmap(restaurant.getLogo()));
+        holder.logoImageView.setImageBitmap(bytesToBitmap(restaurant.getLogo()));
     }
 
     @Override
@@ -60,16 +58,14 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
             logoImageView = itemView.findViewById(R.id.restaurant_logo);
         }
     }
-    public void insertData() throws IOException {
+
+    public void insertData() {
         // Example data
+        Drawable drawable = ContextCompat.getDrawable(context, R.drawable.logo1); // Use ContextCompat
+        byte[] logoBytes = bitmapToByte(drawable);
 
-        @SuppressLint("UseCompatLoadingForDrawables") byte[] pasta = bitmapToByte(context.getResources().getDrawable(R.drawable.logo1));
-
-        Bitmap logo1 = BitmapFactory.decodeStream(context.getAssets().open("pasta.png"));
-        Bitmap logo2 = BitmapFactory.decodeStream(context.getAssets().open("pasta.png"));
-
-        Restaurant restaurant1 = new Restaurant("MCDS", pasta);
-        Restaurant restaurant2 = new Restaurant("Restaurant 2", pasta);
+        Restaurant restaurant1 = new Restaurant("MCDS", logoBytes);
+        Restaurant restaurant2 = new Restaurant("Restaurant 2", logoBytes);
 
         restaurantList.add(restaurant1);
         restaurantList.add(restaurant2);
@@ -77,15 +73,26 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
         notifyDataSetChanged(); // Notify adapter of data changes
     }
 
-    public byte[] bitmapToByte(Drawable image){
+    public byte[] bitmapToByte(Drawable image) {
+        Bitmap bitmap;
+
         // Convert the Drawable image to a Bitmap
-        Bitmap bitmap = ((BitmapDrawable)image).getBitmap();
+        if (image instanceof BitmapDrawable) {
+            bitmap = ((BitmapDrawable) image).getBitmap();
+        } else {
+            bitmap = Bitmap.createBitmap(image.getIntrinsicWidth(), image.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(bitmap);
+            image.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+            image.draw(canvas);
+        }
 
         // Convert the Bitmap to a byte array
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-        byte[] bitmapdata = stream.toByteArray();
+        return stream.toByteArray();
+    }
 
-        return bitmapdata;
+    public Bitmap bytesToBitmap(byte[] byteArray) {
+        return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
     }
 }
