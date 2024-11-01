@@ -2,6 +2,7 @@ package com.example.mobiledevproject;
 
 import android.annotation.SuppressLint;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteBlobTooBigException;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -45,16 +46,26 @@ public class CartActivity extends AppCompatActivity {
         Cursor cursor = dbHelper.getAllCartItems(); // This method should retrieve all items in the orders table
 
         if (cursor != null && cursor.moveToFirst()) {
-            do {
-                @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_FOOD_NAME));
-                @SuppressLint("Range") byte[] image = cursor.getBlob(cursor.getColumnIndex(DatabaseHelper.COLUMN_FOOD_IMAGE));
-                @SuppressLint("Range") double price = cursor.getDouble(cursor.getColumnIndex(DatabaseHelper.COLUMN_FOOD_PRICE));
-                @SuppressLint("Range") String description = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_FOOD_DESCRIPTION));
-                @SuppressLint("Range") String restaurant = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_RESTAURANT_ORDER));
+            try {
 
-                cartItemList.add(new Food(name, image, price, description, restaurant, "", ""));
+            do {
+                @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_FOOD_NAME_ORDER));
+                @SuppressLint("Range") byte[] image = cursor.getBlob(cursor.getColumnIndex(DatabaseHelper.COLUMN_FOOD_IMAGE_ORDER));
+                @SuppressLint("Range") double price = cursor.getDouble(cursor.getColumnIndex(DatabaseHelper.COLUMN_FOOD_PRICE_ORDER));
+                @SuppressLint("Range") String description = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_FOOD_DESCRIPTION_ORDER));
+                @SuppressLint("Range") String restaurant = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_RESTAURANT_ORDER));
+                @SuppressLint("Range") String tag = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_FOOD_TAGS_ORDER));
+                @SuppressLint("Range") String concat = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_RESTAURANT_FOOD_ORDER));
+
+                cartItemList.add(new Food(name, image, price, description, restaurant, tag, concat));
             } while (cursor.moveToNext());
-            cursor.close();
+            }
+            catch (SQLiteBlobTooBigException e) {
+                throw new RuntimeException(e);
+            }
+            finally {
+                cursor.close();
+            }
         }
         cartAdapter.notifyDataSetChanged();
     }
