@@ -48,6 +48,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Creation of cart table
     public static final String TABLE_CART = "cart"; // New table for cart
     public static final String COLUMN_CART_ID = "cart_id"; // Primary ket for items in cart
+    public static final String COLUMN_RESTAURANT_FOOD_CART = "restaurant_food"; // Restaurant + food item
     public static final String COLUMN_RESTAURANT_CART = "restaurant_name"; // Restaurant name
     public static final String COLUMN_FOOD_ITEM = "food_item"; // Food name
     public static final String COLUMN_PRICE = "price"; // Food price
@@ -86,6 +87,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TABLE_CREATE_CART =
             "CREATE TABLE " + TABLE_CART + " (" +
                     COLUMN_CART_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    COLUMN_RESTAURANT_FOOD_CART + " TEXT, " +
                     COLUMN_RESTAURANT_CART + " TEXT, " +
                     COLUMN_FOOD_ITEM + " TEXT, " +
                     COLUMN_FOOD_IMAGE_CART + " BLOB, " +
@@ -125,9 +127,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void addFoodToCart(String restName, String foodName, double price, byte[] image, String description, String tags) {
+    public void addFoodToCart(String restName, String foodName, double price, byte[] image, String description, String tags, String concat) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
+        values.put(COLUMN_RESTAURANT_FOOD_CART, concat);
         values.put(COLUMN_RESTAURANT_CART, restName);
         values.put(COLUMN_FOOD_ITEM, foodName);
         values.put(COLUMN_PRICE, price);
