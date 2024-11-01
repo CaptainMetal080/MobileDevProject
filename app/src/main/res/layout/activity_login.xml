@@ -15,26 +15,40 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp" />
 
-    <Button
-        android:id="@+id/btn_driver"
+    <!-- Username input -->
+    <EditText
+        android:id="@+id/username_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:hint="Username"
         android:layout_below="@id/login_title"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="80dp"
-        android:backgroundTint="#2196F3"
-        android:text="Driver Login"
-        android:textColor="#FFFFFF" />
+        android:layout_marginTop="30dp"
+        android:padding="12dp"
+        android:backgroundTint="#BDBDBD"
+        android:inputType="textPersonName" />
 
-    <Button
-        android:id="@+id/btn_customer"
+    <!-- Password input -->
+    <EditText
+        android:id="@+id/password_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Customer Login"
+        android:hint="Password"
+        android:layout_below="@id/username_input"
         android:layout_marginTop="20dp"
-        android:layout_below="@id/btn_driver"
+        android:padding="12dp"
+        android:backgroundTint="#BDBDBD"
+        android:inputType="textPassword" />
+
+    <!-- Single Login button -->
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Login"
+        android:layout_marginTop="40dp"
+        android:layout_below="@id/password_input"
         android:layout_centerHorizontal="true"
-        android:backgroundTint="#FF8A65"
+        android:backgroundTint="#2196F3"
         android:textColor="#FFFFFF" />
 
 </RelativeLayout>
