@@ -6,12 +6,16 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Creation of database
     private static final String DATABASE_NAME = "restaurants.db";
     private static final int DATABASE_VERSION = 2; // Increment version for upgrade
-
+    String currentDateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
     // Creation of restaurants table
     public static final String TABLE_RESTAURANTS = "restaurants";
     public static final String COLUMN_RESTAURANT_NAME = "restaurant_name"; // Restaurant name will be PK
@@ -31,12 +35,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Creation of order table
     public static final String TABLE_ORDERS = "orders"; // New table for orders
-    public static final String COLUMN_ORDER_ID = "order_id"; // Primary key for orders
+    public static final String COLUMN_RESTAURANT_FOOD_ORDER = "restaurant_food_order"; // Primary key for orders
     public static final String COLUMN_RESTAURANT_ORDER = "restaurant_order"; // Restaurant name
-    public static final String COLUMN_FOOD_ITEMS = "food_items"; // Food ordered
-    public static final String COLUMN_TOTAL_PRICE = "total_price"; // Total price of order
+    public static final String COLUMN_FOOD_NAME_ORDER = "food_name_order"; // Food ordered
+    public static final String COLUMN_FOOD_PRICE_ORDER = "food_price_order"; // Total price of order
+    public static final String COLUMN_FOOD_IMAGE_ORDER = "food_image_order"; // Food image (BLOB)
+    public static final String COLUMN_FOOD_DESCRIPTION_ORDER = "food_description_order"; // Food description
     public static final String COLUMN_ETA = "ETA"; // Food ordered
     public static final String COLUMN_ORDER_DATE = "order_date"; // Date/time ordered
+    public static final String COLUMN_FOOD_TAGS_ORDER = "food_tags_order";
 
     // Query for creating the tables
     private static final String TABLE_CREATE_RESTAURANTS =
@@ -58,12 +65,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String TABLE_CREATE_ORDERS =
             "CREATE TABLE " + TABLE_ORDERS + " (" +
-                    COLUMN_ORDER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    COLUMN_RESTAURANT_FOOD_ORDER + " TEXT PRIMARY KEY, " +
                     COLUMN_RESTAURANT_ORDER + " TEXT, " +
-                    COLUMN_FOOD_ITEMS + " TEXT, " +
-                    COLUMN_TOTAL_PRICE + " REAL, " +
-                    COLUMN_ETA + " REAL, " +
-                    COLUMN_ORDER_DATE + " TEXT); ";
+                    COLUMN_FOOD_NAME_ORDER + " TEXT, " +
+                    COLUMN_FOOD_PRICE_ORDER + " REAL, " +
+                    COLUMN_FOOD_IMAGE_ORDER + " BLOB, " +
+                    COLUMN_FOOD_DESCRIPTION_ORDER + " TEXT, " +
+                    COLUMN_ETA + " TEXT, " +
+                    COLUMN_ORDER_DATE + " TEXT, " +
+                    COLUMN_FOOD_TAGS_ORDER + " TEXT);";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -95,4 +105,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DELETE FROM " + TABLE_ORDERS);
         db.close();
     }
+
+    public void addFoodToCart(String foodName, double price, byte[] image, String description, String restaurant,String tags, String concat) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_FOOD_NAME_ORDER, foodName);
+        values.put(COLUMN_FOOD_PRICE_ORDER, price);
+        values.put(COLUMN_FOOD_IMAGE_ORDER, image);
+        values.put(COLUMN_FOOD_DESCRIPTION_ORDER, description);
+        values.put(COLUMN_RESTAURANT_ORDER, restaurant);
+        values.put(COLUMN_RESTAURANT_FOOD_ORDER, concat);
+        values.put(COLUMN_FOOD_TAGS_ORDER, tags);
+        values.put(COLUMN_ETA, 12);
+        values.put(COLUMN_ORDER_DATE, currentDateTime);
+
+        db.insert(TABLE_ORDERS, null, values);
+        db.close();
+    }
+
+    public Cursor getAllCartItems() {
+        SQLiteDatabase db = getReadableDatabase();
+        return db.rawQuery("SELECT * FROM " + TABLE_ORDERS, null);
+    }
+
+
 }

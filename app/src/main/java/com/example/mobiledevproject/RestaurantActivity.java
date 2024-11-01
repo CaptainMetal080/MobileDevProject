@@ -69,7 +69,6 @@ public class RestaurantActivity extends AppCompatActivity {
     }
 
     public void backButton(View v){
-        Intent i = new Intent(this, MainActivity.class);
-        startActivity(i);
+        finish();
     }
 }

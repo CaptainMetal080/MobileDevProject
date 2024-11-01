@@ -98,9 +98,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void Cart(View view) {
-
+        Intent intent = new Intent(MainActivity.this, CartActivity.class);
+        startActivity(intent);
     }
     public void RestraurantPage(View view){
         Intent intent = new Intent(MainActivity.this, RestaurantActivity.class);
+    }
+
+    public void backButton(View view) {
+        finish();
     }
 }

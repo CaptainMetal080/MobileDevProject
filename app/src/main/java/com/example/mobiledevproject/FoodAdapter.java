@@ -11,29 +11,32 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.ByteArrayOutputStream;
-import java.text.BreakIterator;
 import java.util.List;
 import java.util.Objects;
 
 public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder> {
     private List<Food> foodList;
     Context context;
+    private DatabaseHelper dbHelper;
 
     public FoodAdapter(Context context, List<Food> foodList) {
 
         this.foodList = foodList;
         this.context=context;
+        this.dbHelper = new DatabaseHelper(context);
     }
 
     @NonNull
     @Override
     public FoodViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_food_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.food_view, parent, false);
         return new FoodViewHolder(view);
     }
 
@@ -44,10 +47,16 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
         holder.foodImage.setImageBitmap(food.bytesToBitmap(food.getImage()));
         holder.foodPrice.setText(String.format("$%.2f", food.getPrice())); // Format price
         holder.foodDescription.setText(food.getDescription());
+
+        holder.itemView.setOnClickListener(v -> {
+            dbHelper.addFoodToCart(food.getName(), food.getPrice(), food.getImage(), food.getDescription(), food.getRestaurant(),food.getTag(),food.getConcat());
+            Toast.makeText(context, food.getName() + " added to cart!", Toast.LENGTH_SHORT).show();
+        });
     }
 
     @Override
     public int getItemCount() {
+
         return foodList.size();
     }
 
@@ -165,4 +174,5 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
     public Bitmap bytesToBitmap(byte[] byteArray) {
         return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
     }
+
 }

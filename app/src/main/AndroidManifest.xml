@@ -25,6 +25,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".RestaurantActivity" />
+        <activity android:name=".CartActivity" />
     </application>
 
 </manifest>
