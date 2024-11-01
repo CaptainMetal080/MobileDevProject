@@ -1,6 +1,5 @@
 package com.example.mobiledevproject;
 
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
@@ -19,8 +18,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
-
-import com.example.mobiledevproject.R;
 
 public class DeliveryTrackingActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -57,24 +54,26 @@ public class DeliveryTrackingActivity extends AppCompatActivity implements OnMap
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
-            return;
+        } else {
+            enableLocationTracking();
         }
-        enableLocationTracking();
     }
 
     @SuppressLint("MissingPermission")
     private void enableLocationTracking() {
-        googleMap.setMyLocationEnabled(true);
-        fusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
-                if (location != null) {
-                    LatLng driverLocation = new LatLng(location.getLatitude(), location.getLongitude());
-                    googleMap.addMarker(new MarkerOptions().position(driverLocation).title("Your Driver's Location"));
-                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(driverLocation, 15));
+        if (googleMap != null) {
+            googleMap.setMyLocationEnabled(true);
+            fusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                @Override
+                public void onSuccess(Location location) {
+                    if (location != null) {
+                        LatLng driverLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                        googleMap.addMarker(new MarkerOptions().position(driverLocation).title("Your Driver's Location"));
+                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(driverLocation, 15));
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     @Override
@@ -85,14 +84,20 @@ public class DeliveryTrackingActivity extends AppCompatActivity implements OnMap
 
     @Override
     protected void onPause() {
-        super.onPause();
         mapView.onPause();
+        super.onPause();
     }
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         mapView.onDestroy();
+        super.onDestroy();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mapView.onLowMemory();
     }
 
     @Override
