@@ -56,12 +56,6 @@ public class MainActivity extends AppCompatActivity {
 
         );
 
-        Button buttonAddRestaurant = findViewById(R.id.button);
-        buttonAddRestaurant.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, MainActivity.class);
-            addRestaurantLauncher.launch(intent); // Use ActivityResultLauncher
-        });
-
         try {
             loadRestaurants();
         } catch (IOException e) {
@@ -90,12 +84,12 @@ public class MainActivity extends AppCompatActivity {
                 null, null, null, null, null, null);
 
         while (cursor.moveToNext()) {
-            @SuppressLint("Range") String title = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_RESTAURANT_NAME));
+            @SuppressLint("Range") String restaurant = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_RESTAURANT_NAME));
             @SuppressLint("Range") byte[] logoBytes = cursor.getBlob(cursor.getColumnIndex(DatabaseHelper.COLUMN_LOGO));
 
             // Load food items for the restaurant
 
-            restaurantList.add(new Restaurant(title, logoBytes));
+            restaurantList.add(new Restaurant(restaurant, logoBytes));
         }
         cursor.close();
         db.close();
@@ -107,6 +101,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
     public void RestraurantPage(View view){
-        Intent intent = new Intent(MainActivity.this, MainActivity.class);
+        Intent intent = new Intent(MainActivity.this, RestaurantActivity.class);
     }
 }

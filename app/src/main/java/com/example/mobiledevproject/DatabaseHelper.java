@@ -2,6 +2,7 @@ package com.example.mobiledevproject;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -13,7 +14,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Creation of restaurants table
     public static final String TABLE_RESTAURANTS = "restaurants";
-    public static final String COLUMN_RESTAURANT_NAME = "restaurant"; // Restaurant name will be PK
+    public static final String COLUMN_RESTAURANT_NAME = "restaurant_name"; // Restaurant name will be PK
     public static final String COLUMN_RESTAURANT_LONG = "restaurant_longitude"; // Restaurant's longitude on map
     public static final String COLUMN_RESTAURANT_LAT = "restaurant_latitude"; // Restaurant's latitude on map
     public static final String COLUMN_LOGO = "logo"; // Assuming logo is stored as BLOB
@@ -31,7 +32,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Creation of order table
     public static final String TABLE_ORDERS = "orders"; // New table for orders
     public static final String COLUMN_ORDER_ID = "order_id"; // Primary key for orders
-    public static final String COLUMN_RESTAURANT_ORDER = "restaurant"; // Restaurant name
+    public static final String COLUMN_RESTAURANT_ORDER = "restaurant_order"; // Restaurant name
     public static final String COLUMN_FOOD_ITEMS = "food_items"; // Food ordered
     public static final String COLUMN_TOTAL_PRICE = "total_price"; // Total price of order
     public static final String COLUMN_ETA = "ETA"; // Food ordered
@@ -83,7 +84,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-
+    public Cursor retrieveFoodByTitle(String title) {
+        SQLiteDatabase db = getReadableDatabase();
+        return db.rawQuery("SELECT * FROM " + TABLE_FOODS + " WHERE " + COLUMN_RESTAURANT + " = ?", new String[]{title});
+    }
     public void deleteAll() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM " + TABLE_FOODS);

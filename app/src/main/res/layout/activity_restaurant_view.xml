@@ -4,10 +4,12 @@
     android:orientation="vertical"
     android:layout_margin="2dp"
     android:padding="8dp"
-    android:background="#FFCCBC">
+    android:background="#FFCCBC"
+    android:clickable="true"
+    android:focusable="true">
 
     <LinearLayout
-        android:onClick="RestraurantPage"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"

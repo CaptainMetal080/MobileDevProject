@@ -1,5 +1,6 @@
 package com.example.mobiledevproject;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -41,6 +42,14 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
         Restaurant restaurant = restaurantList.get(position);
         holder.titleTextView.setText(restaurant.getTitle());
         holder.logoImageView.setImageBitmap(bytesToBitmap(restaurant.getLogo()));
+        holder.bind(restaurant);
+
+        // Set an OnClickListener for the restaurant layout
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, RestaurantActivity.class);
+            intent.putExtra("TITLE", restaurant.getTitle()); // Pass the title
+            context.startActivity(intent);
+        });
     }
 
     @Override
@@ -57,18 +66,34 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
             titleTextView = itemView.findViewById(R.id.restaurant_title);
             logoImageView = itemView.findViewById(R.id.restaurant_logo);
         }
+        void bind(Restaurant restaurant) {
+            titleTextView.setText(restaurant.getTitle());
+            logoImageView.setImageBitmap(bytesToBitmap(restaurant.getLogo()));
+        }
     }
 
     public void insertData() {
         // Example data
-        Drawable drawable = ContextCompat.getDrawable(context, R.drawable.logo1); // Use ContextCompat
-        byte[] logoBytes = bitmapToByte(drawable);
+        Drawable aldenaireDrawable = ContextCompat.getDrawable(context, R.drawable.aldenaire); // Use ContextCompat
+        byte[] aldenaireLogo = bitmapToByte(aldenaireDrawable);
+        Restaurant aldenaireRestaurant = new Restaurant("Aldenaire", aldenaireLogo);
+        restaurantList.add(aldenaireRestaurant);
 
-        Restaurant restaurant1 = new Restaurant("MCDS", logoBytes);
-        Restaurant restaurant2 = new Restaurant("Restaurant 2", logoBytes);
+        Drawable sfsDrawable = ContextCompat.getDrawable(context, R.drawable.sfs); // Use ContextCompat
+        byte[] sfsLogo = bitmapToByte(sfsDrawable);
+        Restaurant sfsRestaurant = new Restaurant("Street Food Spencers", sfsLogo);
+        restaurantList.add(sfsRestaurant);
 
-        restaurantList.add(restaurant1);
-        restaurantList.add(restaurant2);
+        Drawable treeDrawable = ContextCompat.getDrawable(context, R.drawable.thetree); // Use ContextCompat
+        byte[] treeLogo = bitmapToByte(treeDrawable);
+        Restaurant treeRestaurant = new Restaurant("the Tree", treeLogo);
+        restaurantList.add(treeRestaurant);
+
+        Drawable thynkDrawable = ContextCompat.getDrawable(context, R.drawable.thynkcafe); // Use ContextCompat
+        byte[] thynkLogo = bitmapToByte(thynkDrawable);
+        Restaurant thynkRestaurant = new Restaurant("Thynk Cafe", thynkLogo);
+        restaurantList.add(thynkRestaurant);
+
 
         notifyDataSetChanged(); // Notify adapter of data changes
     }
@@ -92,7 +117,9 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
         return stream.toByteArray();
     }
 
-    public Bitmap bytesToBitmap(byte[] byteArray) {
+    public static Bitmap bytesToBitmap(byte[] byteArray) {
         return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
     }
+
+
 }

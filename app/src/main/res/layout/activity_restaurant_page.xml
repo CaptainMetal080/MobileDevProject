@@ -14,11 +14,24 @@
         android:layout_height="wrap_content"
         android:background="#FF8A65"
         android:minHeight="?attr/actionBarSize"
+        android:orientation="horizontal"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#FD8964"
+        android:rotationY="-180"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbar"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:orientation="horizontal"
-        />
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@android:drawable/ic_media_play"
+        app:tint="#FFFFFF"
+        android:onClick=""/>
 
     <ImageView
         android:layout_width="wrap_content"
@@ -64,21 +77,6 @@
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="50dp"
-        android:layout_marginBottom="16dp"
-        android:backgroundTint="#000000"
-        android:onClick="launchNewNote"
-        android:text="+"
-        android:textColorLink="#000000"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <SearchView
         android:id="@+id/searchView"
         android:layout_width="341dp"
@@ -97,7 +95,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.02872777" />
-
 
 
 

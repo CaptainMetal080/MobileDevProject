@@ -12,14 +12,16 @@ public class Food implements Serializable {
     private String description;
     private String restaurant;
     private String tag;
+    private String concat;
 
-    public Food(String name, byte[] image, double price, String description, String restaurant, String tag) {
+    public Food(String name, byte[] image, double price, String description, String restaurant, String tag, String concat) {
         this.name = name;
         this.image = image;
         this.price = price;
         this.description = description;
         this.restaurant=restaurant;
         this.tag=tag;
+        this.concat=concat;
     }
 
     public String getName() {
@@ -37,8 +39,24 @@ public class Food implements Serializable {
     public String getDescription() {
         return description;
     }
+    public String getRestaurant(){
+        return  restaurant;
+    }
+    public String getTag(){
+        return tag;
+    }
+
+    public String getConcat(){
+        if(!concat.isEmpty()) {
+            return concat;
+        }
+        else{return  restaurant+name;
+        }
+    }
+
     public Bitmap bytesToBitmap(byte[] byteArray) {
         return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
     }
+
 
 }
