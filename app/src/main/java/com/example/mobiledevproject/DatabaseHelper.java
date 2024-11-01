@@ -125,7 +125,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void addFoodToCart(String restName, String foodName, double price, byte[] image, String description, String tags) {
+    public void addFoodToCart(String restName, String foodName, double price, byte[] image, String description, String tags,int quantity) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_RESTAURANT_CART, restName);
