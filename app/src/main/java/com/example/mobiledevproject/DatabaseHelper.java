@@ -100,6 +100,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
     public void deleteAll() {
         SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM " + TABLE_FOODS);
+        db.execSQL("DELETE FROM " + TABLE_RESTAURANTS);
         db.execSQL("DELETE FROM " + TABLE_ORDERS);
         db.close();
     }
