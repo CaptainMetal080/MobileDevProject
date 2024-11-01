@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
                 null, null, null, null, null, null);
 
         while (cursor.moveToNext()) {
-            @SuppressLint("Range") String title = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_TITLE));
+            @SuppressLint("Range") String title = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_RESTAURANT_NAME));
             @SuppressLint("Range") byte[] logoBytes = cursor.getBlob(cursor.getColumnIndex(DatabaseHelper.COLUMN_LOGO));
 
             // Load food items for the restaurant

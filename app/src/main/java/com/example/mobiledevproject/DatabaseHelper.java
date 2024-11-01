@@ -7,13 +7,16 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
+    // Creation of database
     private static final String DATABASE_NAME = "restaurants.db";
     private static final int DATABASE_VERSION = 2; // Increment version for upgrade
 
+    // Creation of restaurants table
     public static final String TABLE_RESTAURANTS = "restaurants";
     public static final String COLUMN_RESTAURANT_NAME = "restaurant"; // Restaurant name will be PK
     public static final String COLUMN_LOGO = "logo"; // Assuming logo is stored as BLOB
 
+    // Creation of foods table
     public static final String TABLE_FOODS = "foods"; // New table for foods
     public static final String COLUMN_RESTAURANT_FOOD = "restaurant_food"; // Primary key for food table
     public static final String COLUMN_RESTAURANT = "restaurant"; // Restaurant name
@@ -23,6 +26,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_FOOD_DESCRIPTION = "food_description"; // Food description
     public static final String COLUMN_FOOD_TAGS = "food_tags"; // Food tags for searchability
 
+    // Creation of order table
     public static final String TABLE_ORDERS = "orders"; // New table for orders
     public static final String COLUMN_ORDER_ID = "order_id"; // Primary key for orders
     public static final String COLUMN_RESTAURANT_ORDER = "restaurant"; // Restaurant name
