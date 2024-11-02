@@ -1,7 +1,6 @@
 package com.example.mobiledevproject;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteBlobTooBigException;
 import android.os.Bundle;
@@ -95,8 +94,21 @@ public class CartActivity extends AppCompatActivity {
     public void backButton(View v){
         finish();
     }
-    public void Checkout(View view){
-        Intent intent = new Intent(this, DeliveryTrackingActivity.class);
-        startActivity(intent);
+
+    // Method to handle checkout
+    public void performCheckout(View view) {
+        if (!cartItemList.isEmpty()) {
+            // Clear the cart in the database
+            dbHelper.deleteFromCart();
+            // Clear the local cart item list
+            cartItemList.clear();
+            cartAdapter.notifyDataSetChanged();
+            updateSummary();
+            // Display a message to the user indicating checkout was successful
+            // e.g., Toast.makeText(this, "Checkout successful!", Toast.LENGTH_SHORT).show();
+        } else {
+            // Notify user cart is empty
+            // e.g., Toast.makeText(this, "Your cart is empty.", Toast.LENGTH_SHORT).show();
+        }
     }
 }
