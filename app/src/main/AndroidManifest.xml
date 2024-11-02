@@ -29,7 +29,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="your_API_key"/>
+            android:value="AIzaSyBvB7McUDr5YJ2QqW1tqq_fTOotzwHsj6E" />
 
         <activity android:name=".DeliveryTrackingActivity" />
 

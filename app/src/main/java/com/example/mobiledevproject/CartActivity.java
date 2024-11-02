@@ -119,7 +119,7 @@ public class CartActivity extends AppCompatActivity {
             dbHelper.deleteFromCart();
             cartItemList.clear();
             Intent intent = new Intent(this, DeliveryTrackingActivity.class);
-            //startActivity(intent);
+            startActivity(intent);
             cartAdapter.notifyDataSetChanged();
             updateSummary();
         } else {
