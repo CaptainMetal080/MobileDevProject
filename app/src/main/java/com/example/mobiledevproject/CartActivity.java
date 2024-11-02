@@ -1,6 +1,7 @@
 package com.example.mobiledevproject;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteBlobTooBigException;
 import android.os.Bundle;
@@ -93,5 +94,9 @@ public class CartActivity extends AppCompatActivity {
 
     public void backButton(View v){
         finish();
+    }
+    public void Checkout(View view){
+        Intent intent = new Intent(this, DeliveryTrackingActivity.class);
+        startActivity(intent);
     }
 }

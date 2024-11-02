@@ -26,6 +26,13 @@
         </activity>
         <activity android:name=".RestaurantActivity" />
         <activity android:name=".CartActivity" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="your_API_key"/>
+
+        <activity android:name=".DeliveryTrackingActivity" />
+
     </application>
 
 </manifest>
