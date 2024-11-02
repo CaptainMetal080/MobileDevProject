@@ -1,11 +1,14 @@
 package com.example.mobiledevproject;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteBlobTooBigException;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -109,6 +112,19 @@ public class CartActivity extends AppCompatActivity {
         } else {
             // Notify user cart is empty
             // e.g., Toast.makeText(this, "Your cart is empty.", Toast.LENGTH_SHORT).show();
+        }
+    }
+    public void Checkout(View view){
+        if (!cartItemList.isEmpty()) {
+            dbHelper.deleteFromCart();
+            cartItemList.clear();
+            Intent intent = new Intent(this, DeliveryTrackingActivity.class);
+            //startActivity(intent);
+            cartAdapter.notifyDataSetChanged();
+            updateSummary();
+        } else {
+            // Notify user cart is empty
+            Toast.makeText(this, "Your cart is empty.", Toast.LENGTH_SHORT).show();
         }
     }
 }
