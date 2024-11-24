@@ -179,14 +179,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void updateFoodQuantity(String concat, int quantity) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(COLUMN_QUANTITY, String.valueOf(quantity));
-        db.update(TABLE_ORDERS, contentValues, COLUMN_RESTAURANT_FOOD_CART + " = ?", new String[]{concat});
-        db.close();
-    }
-
     public void updateFoodQuantityCart(String concat, int quantity) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -199,6 +191,5 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.delete(TABLE_CART, COLUMN_RESTAURANT_FOOD_CART + " = ?", new String[]{concat});
         db.close();
     }
-
 
 }

@@ -206,6 +206,6 @@
         app:icon="@drawable/cart"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:onClick="Checkout"/>
+        android:onClick="performCheckout"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

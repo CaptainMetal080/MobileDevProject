@@ -43,6 +43,13 @@ public class CartActivity extends AppCompatActivity {
         updateSummary();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadCartItems();  // Reload cart items from the database
+        updateSummary();   // Update the summary
+    }
+
     private void loadCartItems() {
         cartItemList.clear();
         Cursor cursor = dbHelper.getAllCartItems(); // Retrieve all items from the cart table
@@ -58,7 +65,7 @@ public class CartActivity extends AppCompatActivity {
                 @SuppressLint("Range") String tag = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_FOOD_TAGS_CART));
                 @SuppressLint("Range") int quantity = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_QUANTITY));
 
-                cartItemList.add(new Food(name, image, price, description,restaurant,tag,concat, quantity));
+                cartItemList.add(new Food(name, image, price, description, restaurant, tag, concat, quantity));
             } while (cursor.moveToNext());
 
             cursor.close();
@@ -67,7 +74,6 @@ public class CartActivity extends AppCompatActivity {
         cartAdapter.notifyDataSetChanged();
         updateSummary();
     }
-
 
     public void updateSummary() {
         double subtotal = calculateSubtotal();
@@ -105,6 +111,12 @@ public class CartActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, "Your cart is empty.", Toast.LENGTH_SHORT).show();
         }
+    }
+
+
+    public void backButton(View view) {
+
+        finish();
     }
 }
 

@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         try {
             loadRestaurants(); // Reload restaurants when coming back from the add activity
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

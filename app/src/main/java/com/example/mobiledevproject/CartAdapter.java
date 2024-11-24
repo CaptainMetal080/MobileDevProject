@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
+
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder> {
     private List<Food> foodList;
     private Context context;
@@ -44,7 +45,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         // Add Button Logic
         holder.addButton.setOnClickListener(v -> {
             food.setQuantity(food.getQuantity() + 1); // Increase quantity by 1
-            dbHelper.updateFoodQuantityCart(food.getName(), food.getQuantity()); // Update in DB
+            dbHelper.updateFoodQuantityCart(food.getConcat(), food.getQuantity()); // Update in DB
             notifyDataSetChanged();
             Toast.makeText(context, food.getName() + " quantity updated!", Toast.LENGTH_SHORT).show();
             updateCartSummary();
@@ -54,7 +55,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         holder.reduceButton.setOnClickListener(v -> {
             if (food.getQuantity() > 1) {
                 food.setQuantity(food.getQuantity() - 1); // Decrease quantity by 1
-                dbHelper.updateFoodQuantityCart(food.getName(), food.getQuantity()); // Update in DB
+                dbHelper.updateFoodQuantityCart(food.getConcat(), food.getQuantity()); // Update in DB
                 notifyDataSetChanged();
                 Toast.makeText(context, food.getName() + " quantity reduced!", Toast.LENGTH_SHORT).show();
             } else {
@@ -65,7 +66,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
 
         // Delete Button Logic
         holder.deleteButton.setOnClickListener(v -> {
-            dbHelper.deleteFoodFromCart(food.getName()); // Delete from DB
+            dbHelper.deleteFoodFromCart(food.getConcat()); // Delete from DB
             foodList.remove(position); // Remove item from the list
             notifyItemRemoved(position); // Update the RecyclerView
             notifyItemRangeChanged(position, foodList.size()); // Notify the rest of the list to update
@@ -103,4 +104,5 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
             deleteButton = itemView.findViewById(R.id.delete_button); // Delete button
         }
     }
+
 }
