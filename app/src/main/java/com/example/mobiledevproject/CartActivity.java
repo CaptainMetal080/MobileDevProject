@@ -68,6 +68,7 @@ public class CartActivity extends AppCompatActivity {
         updateSummary();
     }
 
+
     public void updateSummary() {
         double subtotal = calculateSubtotal();
         double deliveryFee = 5.00; // Example delivery fee
@@ -97,6 +98,10 @@ public class CartActivity extends AppCompatActivity {
             cartItemList.clear();
             cartAdapter.notifyDataSetChanged();
             updateSummary();
+
+            // Navigate to DeliveryTrackingActivity after clearing the cart
+            Intent intent = new Intent(CartActivity.this, DeliveryTrackingActivity.class);
+            startActivity(intent);
         } else {
             Toast.makeText(this, "Your cart is empty.", Toast.LENGTH_SHORT).show();
         }
