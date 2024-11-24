@@ -3,7 +3,6 @@ package com.example.mobiledevproject;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteBlobTooBigException;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -12,15 +11,15 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
 import java.util.List;
-
 public class CartActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
-    private FoodAdapter cartAdapter;
+    private CartAdapter cartAdapter;
     private List<Food> cartItemList;
     private TextView subtotalTextView, deliveryFeeTextView, taxesTextView, totalTextView;
-    DatabaseHelper dbHelper;
+    private DatabaseHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,21 +35,19 @@ public class CartActivity extends AppCompatActivity {
         totalTextView = findViewById(R.id.total);
 
         cartItemList = new ArrayList<>();
-        cartAdapter = new FoodAdapter(this, cartItemList);
+        cartAdapter = new CartAdapter(this, cartItemList);
         recyclerView.setAdapter(cartAdapter);
 
-        // Load cart items (this should be replaced with your actual cart loading logic)
+        // Load cart items
         loadCartItems();
         updateSummary();
     }
 
     private void loadCartItems() {
         cartItemList.clear();
-        Cursor cursor = dbHelper.getAllCartItems(); // This method should retrieve all items in the orders table
+        Cursor cursor = dbHelper.getAllCartItems(); // Retrieve all items from the cart table
 
         if (cursor != null && cursor.moveToFirst()) {
-            try {
-
             do {
                 @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_FOOD_ITEM));
                 @SuppressLint("Range") byte[] image = cursor.getBlob(cursor.getColumnIndex(DatabaseHelper.COLUMN_FOOD_IMAGE_CART));
@@ -59,22 +56,19 @@ public class CartActivity extends AppCompatActivity {
                 @SuppressLint("Range") String restaurant = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_RESTAURANT_CART));
                 @SuppressLint("Range") String concat = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_RESTAURANT_FOOD_CART));
                 @SuppressLint("Range") String tag = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_FOOD_TAGS_CART));
-                @SuppressLint("Range") int quantity = Integer.parseInt(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_QUANTITY)));
+                @SuppressLint("Range") int quantity = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_QUANTITY));
 
-                cartItemList.add(new Food(name, image, price, description, restaurant, tag,concat ,quantity));
+                cartItemList.add(new Food(name, image, price, description,restaurant,tag,concat, quantity));
             } while (cursor.moveToNext());
-            }
-            catch (SQLiteBlobTooBigException e) {
-                throw new RuntimeException(e);
-            }
-            finally {
-                cursor.close();
-            }
+
+            cursor.close();
         }
+
         cartAdapter.notifyDataSetChanged();
+        updateSummary();
     }
 
-    private void updateSummary() {
+    public void updateSummary() {
         double subtotal = calculateSubtotal();
         double deliveryFee = 5.00; // Example delivery fee
         double taxes = subtotal * 0.10; // Example tax calculation
@@ -89,16 +83,12 @@ public class CartActivity extends AppCompatActivity {
     private double calculateSubtotal() {
         double subtotal = 0.0;
         for (Food item : cartItemList) {
-            subtotal += item.getPrice();
+            subtotal += item.getPrice() * item.getQuantity(); // Multiply price by quantity
         }
         return subtotal;
     }
 
-    public void backButton(View v){
-        finish();
-    }
-
-    // Method to handle checkout
+    // The Checkout method that deletes items from cart after checkout
     public void performCheckout(View view) {
         if (!cartItemList.isEmpty()) {
             // Clear the cart in the database
@@ -107,24 +97,9 @@ public class CartActivity extends AppCompatActivity {
             cartItemList.clear();
             cartAdapter.notifyDataSetChanged();
             updateSummary();
-            // Display a message to the user indicating checkout was successful
-            // e.g., Toast.makeText(this, "Checkout successful!", Toast.LENGTH_SHORT).show();
         } else {
-            // Notify user cart is empty
-            // e.g., Toast.makeText(this, "Your cart is empty.", Toast.LENGTH_SHORT).show();
-        }
-    }
-    public void Checkout(View view){
-        if (!cartItemList.isEmpty()) {
-            dbHelper.deleteFromCart();
-            cartItemList.clear();
-            Intent intent = new Intent(this, DeliveryTrackingActivity.class);
-            startActivity(intent);
-            cartAdapter.notifyDataSetChanged();
-            updateSummary();
-        } else {
-            // Notify user cart is empty
             Toast.makeText(this, "Your cart is empty.", Toast.LENGTH_SHORT).show();
         }
     }
 }
+

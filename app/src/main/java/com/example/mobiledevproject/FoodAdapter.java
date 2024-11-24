@@ -49,11 +49,9 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
         holder.foodImage.setImageBitmap(food.bytesToBitmap(food.getImage()));
         holder.foodPrice.setText(String.format("$%.2f", food.getPrice())); // Format price
         holder.foodDescription.setText(food.getDescription());
-        AtomicInteger count= new AtomicInteger();
 
         holder.itemView.setOnClickListener(v -> {
-            count.getAndIncrement();
-            dbHelper.addFoodToCart(food.getRestaurant(),food.getName(), food.getPrice(), food.getImage(), food.getDescription(), food.getTag(),food.getConcat(), count.get());
+            dbHelper.addFoodToCart(food.getRestaurant(),food.getName(), food.getPrice(), food.getImage(), food.getDescription(), food.getTag(),food.getConcat(), 1);
             Toast.makeText(context, food.getName() + " added to cart!", Toast.LENGTH_SHORT).show();
         });
     }

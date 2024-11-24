@@ -65,4 +65,7 @@ public class Food implements Serializable {
     }
 
 
+    public void setQuantity(int i) {
+        this.quantity=i;
+    }
 }

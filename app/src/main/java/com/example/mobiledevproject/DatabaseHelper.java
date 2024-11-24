@@ -1,5 +1,6 @@
 package com.example.mobiledevproject;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -129,18 +130,38 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void addFoodToCart(String restName, String foodName, double price, byte[] image, String description, String tags, String concat, int quantity) {
         SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_RESTAURANT_FOOD_CART, concat);
-        values.put(COLUMN_RESTAURANT_CART, restName);
-        values.put(COLUMN_FOOD_ITEM, foodName);
-        values.put(COLUMN_PRICE, price);
-        values.put(COLUMN_FOOD_IMAGE_CART, image);
-        values.put(COLUMN_FOOD_DESC_CART, description);
-        values.put(COLUMN_FOOD_TAGS_CART, tags);
-        values.put(COLUMN_QUANTITY,quantity);
-        db.insert(TABLE_CART, null, values);
+
+        // Check if item already exists in cart
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_CART + " WHERE " + COLUMN_RESTAURANT_FOOD_CART + " = ?", new String[]{concat});
+
+        if (cursor != null && cursor.moveToFirst()) {
+            // Item exists, update the quantity
+            @SuppressLint("Range") int currentQuantity = cursor.getInt(cursor.getColumnIndex(COLUMN_QUANTITY));
+            int newQuantity = currentQuantity + quantity; // Update quantity
+
+            ContentValues values = new ContentValues();
+            values.put(COLUMN_QUANTITY, newQuantity);
+
+            // Update the cart with new quantity
+            db.update(TABLE_CART, values, COLUMN_RESTAURANT_FOOD_CART + " = ?", new String[]{concat});
+        } else {
+            // Item doesn't exist, insert new item
+            ContentValues values = new ContentValues();
+            values.put(COLUMN_RESTAURANT_FOOD_CART, concat);
+            values.put(COLUMN_RESTAURANT_CART, restName);
+            values.put(COLUMN_FOOD_ITEM, foodName);
+            values.put(COLUMN_PRICE, price);
+            values.put(COLUMN_FOOD_IMAGE_CART, image);
+            values.put(COLUMN_FOOD_DESC_CART, description);
+            values.put(COLUMN_FOOD_TAGS_CART, tags);
+            values.put(COLUMN_QUANTITY, quantity);
+            db.insert(TABLE_CART, null, values);
+        }
+
+        cursor.close();
         db.close();
     }
+
 
     public Cursor getAllCartItems() {
         SQLiteDatabase db = getReadableDatabase();
@@ -157,7 +178,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DELETE FROM " + TABLE_CART);
         db.close();
     }
-    
+
     public void updateFoodQuantity(String concat, int quantity) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -165,5 +186,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.update(TABLE_ORDERS, contentValues, COLUMN_RESTAURANT_FOOD_CART + " = ?", new String[]{concat});
         db.close();
     }
+
+    public void updateFoodQuantityCart(String concat, int quantity) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_QUANTITY, quantity);
+        db.update(TABLE_CART, contentValues, COLUMN_RESTAURANT_FOOD_CART + " = ?", new String[]{concat});
+        db.close();
+    }
+    public void deleteFoodFromCart(String concat) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_CART, COLUMN_RESTAURANT_FOOD_CART + " = ?", new String[]{concat});
+        db.close();
+    }
+
 
 }
