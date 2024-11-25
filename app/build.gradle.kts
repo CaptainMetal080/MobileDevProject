@@ -51,5 +51,6 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     implementation("androidx.core:core-ktx:1.9.0")
+    implementation("com.google.zxing:core:3.4.1")
 
 }

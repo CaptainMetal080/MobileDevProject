@@ -98,6 +98,12 @@ public class CartActivity extends AppCompatActivity {
     // The Checkout method that deletes items from cart after checkout
     public void performCheckout(View view) {
         if (!cartItemList.isEmpty()) {
+            // Calculate the total before clearing the cart
+            double subtotal = calculateSubtotal();
+            double deliveryFee = 5.00; // Example delivery fee
+            double taxes = subtotal * 0.10; // Example tax calculation
+            double total = subtotal + deliveryFee + taxes;
+
             // Clear the cart in the database
             dbHelper.deleteFromCart();
             // Clear the local cart item list
@@ -105,13 +111,19 @@ public class CartActivity extends AppCompatActivity {
             cartAdapter.notifyDataSetChanged();
             updateSummary();
 
-            // Navigate to DeliveryTrackingActivity after clearing the cart
+            // Create an Intent to start DeliveryTrackingActivity
             Intent intent = new Intent(CartActivity.this, DeliveryTrackingActivity.class);
+
+            // Pass the total value as an extra in the Intent
+            intent.putExtra("TOTAL_AMOUNT", total);
+
+            // Start the DeliveryTrackingActivity
             startActivity(intent);
         } else {
             Toast.makeText(this, "Your cart is empty.", Toast.LENGTH_SHORT).show();
         }
     }
+
 
 
     public void backButton(View view) {
