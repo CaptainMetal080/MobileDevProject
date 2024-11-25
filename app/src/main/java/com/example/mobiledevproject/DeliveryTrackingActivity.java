@@ -17,6 +17,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -31,45 +32,50 @@ import java.util.Map;
 
 public class DeliveryTrackingActivity extends AppCompatActivity implements OnMapReadyCallback {
 
-    private MapView mapView;
-    private GoogleMap googleMap;
-    private FusedLocationProviderClient fusedLocationClient;
-    private TextView statusText, etaText, totalPaidText;
-    private ImageView qrCodeImageView;
-
     private static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
 
+    private MapView mapView;
+    private GoogleMap googleMap;
+    private FusedLocationProviderClient fusedLocationClient;
 
-    private double driverLat = 37.7749;
-    private double driverLng = -122.4194;
+    private TextView statusText, etaText, totalPaidText;
+    private ImageView qrCodeImageView;
+
+    private double driverLat = 43.9374;
+    private double driverLng = -78.8570;
+
+    private LatLng userLocation;
+    private LatLng driverLocation;
+
+    private static final int AVERAGE_VEHICLE_SPEED = 30; // km/h, can be adjusted
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delivery_tracking);
 
+        // Initialize UI elements
         statusText = findViewById(R.id.status_text);
         etaText = findViewById(R.id.eta_text);
         totalPaidText = findViewById(R.id.total_paid_text);
         qrCodeImageView = findViewById(R.id.qr_code_image);
 
+        // Initialize MapView and FusedLocationProviderClient
         mapView = findViewById(R.id.map_view);
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-        // Get total paid from the Intent that started this activity
+        // Set up UI with data
         double totalPaid = getIntent().getDoubleExtra("TOTAL_AMOUNT", 0.0);
-
-        // Set initial text
         statusText.setText("Your Driver Will Be Arriving Soon");
         etaText.setText("Your Estimated Arrival is 13 minutes");
         totalPaidText.setText("Total Paid: $" + String.format("%.2f", totalPaid));
 
-        // Generate and display the QR code for the order
+        // Generate and display QR code
         String qrCodeData = "OrderID:123456789;TotalPaid:$" + String.format("%.2f", totalPaid) + ";ETA:13 minutes";
         generateQRCode(qrCodeData);
 
-        // Initialize map
+        // Initialize map view
         Bundle mapViewBundle = savedInstanceState != null ? savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY) : null;
         mapView.onCreate(mapViewBundle);
         mapView.getMapAsync(this);
@@ -79,9 +85,10 @@ public class DeliveryTrackingActivity extends AppCompatActivity implements OnMap
     public void onMapReady(@NonNull GoogleMap map) {
         googleMap = map;
 
-        // Set a map type (just in case it defaults to grey)
+        // Set a map type
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
+        // Request location permissions
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
         } else {
@@ -98,21 +105,43 @@ public class DeliveryTrackingActivity extends AppCompatActivity implements OnMap
                 public void onSuccess(Location location) {
                     if (location != null) {
                         // User's current location
-                        LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                        userLocation = new LatLng(location.getLatitude(), location.getLongitude());
                         googleMap.addMarker(new MarkerOptions().position(userLocation).title("Your Location"));
 
                         // Move the camera to the user's location
                         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15));
 
-                        // Driver's location (editable)
-                        LatLng driverLocation = new LatLng(driverLat, driverLng);  // Custom editable location
+                        // Driver's location
+                        driverLocation = new LatLng(driverLat, driverLng);
                         googleMap.addMarker(new MarkerOptions().position(driverLocation).title("Your Driver's Location"));
+
+                        // Add a line between user and driver
+                        googleMap.addPolyline(new PolylineOptions().add(userLocation, driverLocation).width(5).color(0xFFFF0000));
+
+                        // Calculate ETA
+                        calculateETA(userLocation, driverLocation);
                     } else {
                         Log.e("Maps", "Failed to get location");
                     }
                 }
             });
         }
+    }
+
+    private void calculateETA(LatLng userLocation, LatLng driverLocation) {
+        // Calculate the distance between the user and driver in kilometers
+        float[] results = new float[1];
+        Location.distanceBetween(userLocation.latitude, userLocation.longitude,
+                driverLocation.latitude, driverLocation.longitude, results);
+
+        float distanceInKm = results[0] / 1000; // Convert meters to kilometers
+
+        // Calculate the ETA in minutes assuming an average vehicle speed
+        float estimatedTimeInMinutes = (distanceInKm / AVERAGE_VEHICLE_SPEED) * 60;
+
+        // Update ETA text
+        int etaInMinutes = (int) Math.round(estimatedTimeInMinutes);
+        etaText.setText("Your Estimated Arrival is " + etaInMinutes + " minutes");
     }
 
     private void generateQRCode(String data) {
