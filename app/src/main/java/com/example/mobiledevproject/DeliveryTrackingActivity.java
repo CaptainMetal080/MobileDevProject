@@ -2,10 +2,10 @@ package com.example.mobiledevproject;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -40,9 +40,9 @@ public class DeliveryTrackingActivity extends AppCompatActivity implements OnMap
     private static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
 
-    // Custom driver's location (latitude, longitude)
-    private double driverLat = 37.7749;  // Example: San Francisco latitude
-    private double driverLng = -122.4194; // Example: San Francisco longitude
+
+    private double driverLat = 37.7749;
+    private double driverLng = -122.4194;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +79,9 @@ public class DeliveryTrackingActivity extends AppCompatActivity implements OnMap
     public void onMapReady(@NonNull GoogleMap map) {
         googleMap = map;
 
+        // Set a map type (just in case it defaults to grey)
+        googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
         } else {
@@ -104,6 +107,8 @@ public class DeliveryTrackingActivity extends AppCompatActivity implements OnMap
                         // Driver's location (editable)
                         LatLng driverLocation = new LatLng(driverLat, driverLng);  // Custom editable location
                         googleMap.addMarker(new MarkerOptions().position(driverLocation).title("Your Driver's Location"));
+                    } else {
+                        Log.e("Maps", "Failed to get location");
                     }
                 }
             });
@@ -131,7 +136,7 @@ public class DeliveryTrackingActivity extends AppCompatActivity implements OnMap
             bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
             qrCodeImageView.setImageBitmap(bitmap);
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e("QRCode", "Error generating QR code", e);
         }
     }
 
@@ -172,6 +177,8 @@ public class DeliveryTrackingActivity extends AppCompatActivity implements OnMap
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == LOCATION_PERMISSION_REQUEST_CODE && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             enableLocationTracking();
+        } else {
+            Log.e("Permissions", "Location permission denied");
         }
     }
 }
