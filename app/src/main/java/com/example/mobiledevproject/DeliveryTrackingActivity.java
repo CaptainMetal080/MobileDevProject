@@ -40,6 +40,10 @@ public class DeliveryTrackingActivity extends AppCompatActivity implements OnMap
     private static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
 
+    // Custom driver's location (latitude, longitude)
+    private double driverLat = 37.7749;  // Example: San Francisco latitude
+    private double driverLng = -122.4194; // Example: San Francisco longitude
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +69,7 @@ public class DeliveryTrackingActivity extends AppCompatActivity implements OnMap
         String qrCodeData = "OrderID:123456789;TotalPaid:$" + String.format("%.2f", totalPaid) + ";ETA:13 minutes";
         generateQRCode(qrCodeData);
 
+        // Initialize map
         Bundle mapViewBundle = savedInstanceState != null ? savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY) : null;
         mapView.onCreate(mapViewBundle);
         mapView.getMapAsync(this);
@@ -89,13 +94,16 @@ public class DeliveryTrackingActivity extends AppCompatActivity implements OnMap
                 @Override
                 public void onSuccess(Location location) {
                     if (location != null) {
-                        LatLng driverLocation = new LatLng(location.getLatitude(), location.getLongitude());
-                        googleMap.addMarker(new MarkerOptions().position(driverLocation).title("Your Driver's Location"));
-                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(driverLocation, 15));
-
-                        // Optionally, add user's location
+                        // User's current location
                         LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
                         googleMap.addMarker(new MarkerOptions().position(userLocation).title("Your Location"));
+
+                        // Move the camera to the user's location
+                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15));
+
+                        // Driver's location (editable)
+                        LatLng driverLocation = new LatLng(driverLat, driverLng);  // Custom editable location
+                        googleMap.addMarker(new MarkerOptions().position(driverLocation).title("Your Driver's Location"));
                     }
                 }
             });
