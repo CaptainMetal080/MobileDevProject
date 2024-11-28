@@ -28,16 +28,30 @@ public class Login extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Capture input values (for display only)
-                String username = usernameInput.getText().toString();
-                String password = passwordInput.getText().toString();
+                // Capture the input values
+                String username = usernameInput.getText().toString().trim();
+                String password = passwordInput.getText().toString().trim();
 
-                // Display a simple message with the entered username
-                Toast.makeText(Login.this, "Logged in as " + username, Toast.LENGTH_SHORT).show();
+                // Validate inputs
+                if (username.isEmpty() || password.isEmpty()) {
+                    Toast.makeText(Login.this, "Please enter both username and password", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
-                // Launch MainActivity
-                Intent mainIntent = new Intent(Login.this, MainActivity.class);
-                startActivity(mainIntent);
+                DatabaseHelper dbHelper = new DatabaseHelper(Login.this);
+
+                // Check if the username and password match a user in the database
+                if (dbHelper.validateUser(username, password)) {
+
+                    Toast.makeText(Login.this, "Login successful", Toast.LENGTH_SHORT).show();
+
+                    // Launch MainActivity
+                    Intent mainIntent = new Intent(Login.this, MainActivity.class);
+                    startActivity(mainIntent);
+                } else {
+                    // Invalid username or password
+                    Toast.makeText(Login.this, "Invalid username or password", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -46,7 +60,7 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Launch SignUpActivity (you can create this activity)
-                Intent signupIntent = new Intent(Login.this, MainActivity.class);
+                Intent signupIntent = new Intent(Login.this, Signup.class);
                 startActivity(signupIntent);
             }
         });

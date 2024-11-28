@@ -20,6 +20,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "restaurants.db";
     private static final int DATABASE_VERSION = 2; // Increment version for upgrade
 
+    // Creation of user table
+    public static final String TABLE_USERS = "users";
+    public static final String COLUMN_USER_USERNAME = "username";
+    public static final String COLUMN_USER_EMAIL = "email";
+    public static final String COLUMN_USER_PASSWORD = "password";
+
     // Creation of restaurants table
     public static final String TABLE_RESTAURANTS = "restaurants";
     public static final String COLUMN_RESTAURANT_NAME = "restaurant"; // Restaurant name will be PK
@@ -59,6 +65,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_QUANTITY = "quantity"; // Food quantity
 
     // Query for creating the tables
+    private static final  String TABLE_CREATE_USERS =
+            "CREATE TABLE " + TABLE_USERS + " (" +
+                    COLUMN_USER_USERNAME + " TEXT PRIMARY KEY, " +
+                    COLUMN_USER_EMAIL + " TEXT, " +
+                    COLUMN_USER_PASSWORD + " TEXT);";
+
     private static final String TABLE_CREATE_RESTAURANTS =
             "CREATE TABLE " + TABLE_RESTAURANTS + " (" +
                     COLUMN_RESTAURANT_NAME + " TEXT PRIMARY KEY, " +
@@ -103,6 +115,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        db.execSQL(TABLE_CREATE_USERS); // Create users table
         db.execSQL(TABLE_CREATE_RESTAURANTS); // Create restaurants table
         db.execSQL(TABLE_CREATE_FOODS); // Create foods table
         db.execSQL(TABLE_CREATE_ORDERS); // Create orders table
@@ -111,6 +124,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_FOODS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_RESTAURANTS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ORDERS);
@@ -121,6 +135,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void deleteAll() {
         SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM " + TABLE_USERS);
         db.execSQL("DELETE FROM " + TABLE_FOODS);
         db.execSQL("DELETE FROM " + TABLE_RESTAURANTS);
         db.execSQL("DELETE FROM " + TABLE_ORDERS);
@@ -190,6 +205,37 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_CART, COLUMN_RESTAURANT_FOOD_CART + " = ?", new String[]{concat});
         db.close();
+    }
+
+    // add new user to database
+    public void addUser(String username, String email, String password) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_USER_USERNAME, username);
+        contentValues.put(COLUMN_USER_EMAIL, email);
+        contentValues.put(COLUMN_USER_PASSWORD, password);
+        db.insert(TABLE_USERS, null, contentValues);
+        db.close();
+    }
+
+    // check if user exists
+    public boolean validateUser(String username, String password) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Query the database to check if the username and password match
+        String query = "SELECT * FROM " + TABLE_USERS + " WHERE " + COLUMN_USER_USERNAME + "=? AND " + COLUMN_USER_PASSWORD + "=?";
+        Cursor cursor = db.rawQuery(query, new String[]{username, password});
+
+        // Check if a row is returned (i.e., user exists)
+        if (cursor != null && cursor.moveToFirst()) {
+            cursor.close();
+            db.close();
+            return true;
+        } else {
+            cursor.close();
+            db.close();
+            return false;
+        }
     }
 
 }
